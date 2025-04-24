@@ -1,0 +1,109 @@
+.admin-bookings {
+    padding: 20px;
+  }
+  
+  .admin-bookings h2 {
+    color: tomato;
+    margin-bottom: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .filters input,
+  .filters select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .booking-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .booking-table th,
+  .booking-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .booking-table th {
+    background-color: #ffe5e0;
+    color: tomato;
+  }
+  
+  .booking-table .approve-button {
+    background-color: rgb(0, 202, 0);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    margin-right: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .booking-table .cancel-button {
+    background-color: rgb(207, 33, 2);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    margin-right: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .booking-table .approve-button:hover {
+    background-color: #68c551;
+  }
+  .booking-table .cancel-button:hover {
+    background-color: #f55f5f;
+  }
+  
+  .reset-btn {
+    margin-left: 10px;
+    background-color: tomato;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .reset-btn:hover {
+    background-color: #d83b1f;
+  }
+  
+
+  .booking-table td.status-cell span {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
+  .status-pending {
+    background-color: #fff4e5;
+    color: #ff9800;
+  }
+  
+  .status-approved {
+    background-color: #e6f8ed;
+    color: #4caf50;
+  }
+  
+  .status-cancelled {
+    background-color: #ffeaea;
+    color: #f44336;
+  }
+  
+  .booking-table tr:hover {
+    background-color: #fafafa;
+    transition: 0.2s ease-in;
+  }
+  

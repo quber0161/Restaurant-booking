@@ -1,0 +1,384 @@
+.booking-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  .step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .step {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    border-bottom: 2px solid #ccc;
+    color: #888;
+  }
+  
+  .step.active {
+    color: #000;
+    font-weight: bold;
+    border-color: #333;
+  }
+  
+  .step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .step-content input[type="date"] {
+    padding: 8px;
+    font-size: 16px;
+  }
+  
+  .step-content button {
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .step-content button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+  }
+  
+  .placeholder {
+    text-align: center;
+  }
+  
+
+
+  /* //////////////////////////// */
+
+  .timeslot-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .timeslot-button {
+    padding: 8px 12px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 5px;
+  }
+  
+  .timeslot-button:hover {
+    background-color: #ddd;
+  }
+  
+  .timeslot-button.selected {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+
+  /* ////////////////////// */
+
+  .guest-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .guest-button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #eee;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .guest-button.selected {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+  }
+  
+  .guest-button:disabled {
+    background-color: #ccc;
+    color: #888;
+    cursor: not-allowed;
+  }
+  
+
+  /* ///////////////// */
+
+  .form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+  }
+  
+  input, textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+
+  /* TableBooking.css */
+
+.booking-container {
+    max-width: 700px;
+    /* margin: 2rem auto; */
+    padding: 2rem;
+    background-color: #fff5f2;
+    border: 2px solid #ff8269;
+    border-radius: 16px;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 4px 12px rgba(255, 99, 71, 0.2);
+    margin-top: 250px;
+    margin-bottom: 350px;
+
+  }
+  
+  .booking-container h2 {
+    color: #b02c1d;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    display: block;
+    margin: 0.8rem 0 0.3rem;
+    color: #b02c1d;
+    font-weight: 600;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 8px;
+    border: 1px solid #ff8269;
+    background-color: #fff;
+    font-size: 1rem;
+    color: #333;
+    outline-color: #ff6347;
+  }
+  
+  input:disabled, select:disabled {
+    background-color: #eee;
+    color: #aaa;
+    cursor: not-allowed;
+  }
+  
+  .time-slot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .time-slot button {
+    padding: 0.5rem 1rem;
+    background-color: #ff8269;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .time-slot button:hover {
+    background-color: #ff6347;
+  }
+  
+  .time-slot button.selected {
+    background-color: #b02c1d;
+  }
+  
+  .submit-btn {
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.2rem;
+    background-color: #ff6347;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #d64733;
+  }
+  
+
+  .step {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    border-bottom: 2px solid #ffccbc;
+    color: #b02c1d;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .step.active {
+    color: #fff;
+    background-color: #ff6347;
+    border-color: #ff6347;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .guest-button,
+.timeslot-button {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ff8269;
+  background-color: #ffe5de;
+  color: #b02c1d;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.guest-button.selected,
+.timeslot-button.selected {
+  background-color: #ff6347;
+  color: #fff;
+  font-weight: bold;
+}
+
+.guest-button:disabled {
+  background-color: #f0f0f0;
+  color: #bbb;
+  border-color: #ddd;
+  cursor: not-allowed;
+}
+
+.button-group button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    border: none;
+    background-color: #ff6347;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-group button:hover {
+    background-color: #d6452b;
+  }
+  
+  .button-group button:disabled {
+    background-color: #f6a89b;
+    cursor: not-allowed;
+  }
+  
+
+  .confirmation-screen {
+    text-align: center;
+    padding: 2rem;
+    background-color: #fff2ed;
+    border: 2px solid #ff8269;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(255, 99, 71, 0.15);
+  }
+  
+  .confirmation-details {
+    margin-top: 1rem;
+    text-align: left;
+    color: #b02c1d;
+  }
+  
+  .confirmation-screen h3 {
+    font-size: 22px;
+    color: #d6452b;
+  }
+  
+  .confirmation-screen .button-group button {
+    margin-top: 1rem;
+    width: 48%;
+  }
+  
+  .step-content {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+
+  /* 🍅 Tomato-styled datepicker input */
+.custom-datepicker {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ff6347;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #b02c1d;
+  outline: none;
+}
+
+/* 🗓️ Calendar panel container */
+.custom-calendar {
+  border: 2px solid #ff6347 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 10px rgba(255, 99, 71, 0.2) !important;
+}
+
+/* 🔘 Day cells */
+.react-datepicker__day {
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+/* 🟥 Active & hover days */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #ff6347 !important;
+  color: white !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #ffd5cb;
+  color: #b02c1d;
+}
+
+/* 🚫 Disabled past days */
+.react-datepicker__day--disabled {
+  color: #ccc !important;
+  cursor: not-allowed !important;
+}
