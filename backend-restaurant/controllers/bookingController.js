@@ -14,29 +14,30 @@ const generateTimeSlots = () => {
 
 // Controller: Get available time slots for a given date
 const getAvailableSlots = async (req, res) => {
-  const { date, timeSlot } = req.query;
-
-  if (!date || !timeSlot) {
-    return res.status(400).json({ error: "Missing date or timeSlot" });
-  }
-
   try {
+    const { date, timeSlot } = req.query;
+
+    if (!date || !timeSlot) {
+      return res.status(400).json({ success: false, error: "Date and timeSlot are required" });
+    }
+
+    // ✅ Only consider pending and approved bookings
     const bookings = await bookingModel.find({
       date,
       timeSlot,
-      status: { $in: ['pending', 'approved'] }
+      status: { $in: ["pending", "approved"] },
     });
 
-    const totalGuestsBooked = bookings.reduce((sum, b) => sum + b.guestCount, 0);
-    const MAX_GUESTS = 20;
-    const availableGuests = Math.max(0, MAX_GUESTS - totalGuestsBooked);
+    const totalGuests = bookings.reduce((acc, b) => acc + b.guestCount, 0);
+    const availableGuests = 20 - totalGuests;
 
-    res.json({ availableGuests });
+    res.json({ success: true, availableGuests });
   } catch (error) {
-    console.error("Error checking availability:", error);
-    res.status(500).json({ error: "Server error" });
+    console.error("❌ Availability error:", error);
+    res.status(500).json({ success: false, error: "Server error" });
   }
 };
+
 
 
 const createBooking = async (req, res) => {
@@ -98,48 +99,60 @@ const createBooking = async (req, res) => {
 
 const getAllBookings = async (req, res) => {
   try {
-    const { date, status } = req.query;
+    const { date, dateFrom, status } = req.query;
 
-    const filter = {};
-    if (date) filter.date = date;
-    if (status && status !== "all") filter.status = status;
+    const query = {};
 
-    const bookings = await bookingModel.find(filter).sort({ date: 1 });
+    if (date) {
+      query.date = date;
+    } else if (dateFrom) {
+      query.date = { $gte: dateFrom };
+    }
 
+    if (status && status !== "all") {
+      query.status = status;
+    }
+
+    const bookings = await bookingModel.find(query).sort({ date: 1, timeSlot: 1 });
     res.json({ success: true, data: bookings });
   } catch (error) {
     console.error("❌ Error fetching bookings:", error);
-    res.status(500).json({ success: false, message: "Failed to fetch bookings" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 
 
 const getBookingsByDate = async (req, res) => {
-    const { date } = req.params;
-  
-    try {
-      const bookings = await bookingModel.find({ date });
-      
-      // Group guest counts by time slot
-      const timeSlotGuestMap = {};
-  
-      bookings.forEach(booking => {
-        const timeSlot = booking.timeSlot;
-        const guests = booking.guestCount || 0;
-  
-        if (!timeSlotGuestMap[timeSlot]) {
-          timeSlotGuestMap[timeSlot] = 0;
-        }
-        timeSlotGuestMap[timeSlot] += guests;
-      });
-  
-      res.json({ success: true, timeSlotGuestMap });
-    } catch (error) {
-      console.error("❌ Error fetching bookings by date:", error);
-      res.status(500).json({ success: false, message: "Error retrieving bookings" });
-    }
-  };
+  const { date } = req.params;
+
+  try {
+    // ❗️ Filter by date and status
+    const bookings = await bookingModel.find({
+      date,
+      status: { $in: ['pending', 'approved'] } // ✅ Only consider active bookings
+    });
+
+    // Group guest counts by time slot
+    const timeSlotGuestMap = {};
+
+    bookings.forEach((booking) => {
+      const timeSlot = booking.timeSlot;
+      const guests = booking.guestCount || 0;
+
+      if (!timeSlotGuestMap[timeSlot]) {
+        timeSlotGuestMap[timeSlot] = 0;
+      }
+      timeSlotGuestMap[timeSlot] += guests;
+    });
+
+    res.json({ success: true, timeSlotGuestMap });
+  } catch (error) {
+    console.error("❌ Error fetching bookings by date:", error);
+    res.status(500).json({ success: false, message: "Error retrieving bookings" });
+  }
+};
+
   
 
 

@@ -85,10 +85,14 @@ const TableBooking = () => {
       if (!selectedDate || !selectedTimeSlot) return;
   
       try {
-        const formattedDate = new Date(selectedDate).toISOString().split('T')[0];
-        const response = await fetch(`http://localhost:4000/api/bookings/availability?date=${formattedDate}&timeSlot=${selectedTimeSlot}`);
+        const formattedDate = new Date(selectedDate).toISOString().split("T")[0];
+        const response = await fetch(
+          `http://localhost:4000/api/bookings/availability?date=${formattedDate}&timeSlot=${selectedTimeSlot}`
+        );
         const data = await response.json();
         setAvailableGuests(data.availableGuests);
+
+
       } catch (error) {
         console.error("Error fetching availability:", error);
       }
@@ -96,6 +100,7 @@ const TableBooking = () => {
   
     fetchAvailability();
   }, [selectedDate, selectedTimeSlot]);
+  
 
 
 

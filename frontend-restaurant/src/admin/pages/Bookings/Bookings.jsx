@@ -86,7 +86,7 @@ const Bookings = () => {
         <tbody>
           {bookings.map((b) => (
             <tr key={b._id}>
-              <td>{b.date}</td>
+              <td>{new Date(b.date).toLocaleDateString('en-GB')}</td>
               <td>{b.timeSlot}</td>
               <td>{b.firstName} {b.lastName}</td>
               <td>{b.guestCount}</td>
