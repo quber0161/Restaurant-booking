@@ -42,9 +42,16 @@ const TableBooking = () => {
   };
 
 
+  const formatLocalDate = (dateObj) => {
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const handleSubmit = async () => {
     const { firstName, lastName, email, phone, comment } = formData;
+  
   
     const bookingData = {
       firstName,
@@ -52,7 +59,7 @@ const TableBooking = () => {
       email,
       phone,
       comment,
-      date: new Date(selectedDate).toISOString().split("T")[0],
+      date: formatLocalDate(selectedDate), // ✅ send as string
       timeSlot: selectedTimeSlot,
       guestCount: selectedGuestCount,
     };
