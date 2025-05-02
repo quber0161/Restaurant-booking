@@ -13,7 +13,7 @@ import Extras from "./pages/Extras/Extras";
 import Bookings from "./pages/Bookings/Bookings";
 
 const AdminApp = () => {
-  const url = "http://localhost:4000";
+  const url = "https://restaurant-booking-35qh.onrender.com";
   const { token, userRole } = useContext(StoreContext);
   const navigate = useNavigate();
 

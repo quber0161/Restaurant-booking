@@ -13,7 +13,7 @@ const Bookings = () => {
       let query = "";
       if (filterDate) query += `date=${filterDate}`;
       if (filterStatus !== "all") query += `&status=${filterStatus}`;
-      const res = await axios.get(`http://localhost:4000/api/bookings/all?${query}`);
+      const res = await axios.get(`https://restaurant-booking-35qh.onrender.com/api/bookings/all?${query}`);
       if (res.data.success) setBookings(res.data.data);
     } catch (err) {
       console.error("Error fetching bookings:", err);
@@ -22,7 +22,7 @@ const Bookings = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      await axios.post("http://localhost:4000/api/bookings/update-status", { id, status: newStatus });
+      await axios.post("https://restaurant-booking-35qh.onrender.com/api/bookings/update-status", { id, status: newStatus });
       fetchBookings();
     } catch (err) {
       console.error("Error updating status:", err);
@@ -38,7 +38,7 @@ const Bookings = () => {
     setFilterDate("");
     setFilterStatus("all");
     try {
-      const res = await axios.get("http://localhost:4000/api/bookings/all");
+      const res = await axios.get("https://restaurant-booking-35qh.onrender.com/api/bookings/all");
       if (res.data.success) {
         setBookings(res.data.data);
       }
