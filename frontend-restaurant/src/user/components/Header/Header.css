@@ -4,7 +4,7 @@
     background: url('/header_img.png') no-repeat center center;
     background-size: cover;
     position: relative;
-    margin-top: 0px;
+    margin-top: 150px;
     border-radius: 10px;
   }
   
@@ -23,7 +23,7 @@
   .header-contents h2 {
     font-weight: 500;
     color: white;
-    font-size: max(3.5vw, 25px);
+    font-size: max(4.5vw, 22px);
   }
   
   .header-contents p {
@@ -52,7 +52,7 @@
   /* Small devices (e.g. mobile phones) */
   @media (max-width: 600px) {
     .header {
-      height: 60vw;
+      height: 75vh;
       background-position: center;
     }
   
@@ -60,7 +60,8 @@
       max-width: 90%;
       bottom: 5%;
       left: 5%;
-      gap: 12px;
+      gap: 20px;
+      top: 10%;
     }
   
     .header-contents h2 {
@@ -75,6 +76,7 @@
     .header-contents button {
       padding: 3vw 6vw;
       font-size: 4vw;
+      margin-top: 25px;
     }
   }
   
@@ -83,9 +85,7 @@
 
   @media (max-width: 500px) {
     .header {
-      background-size: cover; /* Use cover instead of contain for full background on small screens */
-      background-position: center;
-      height: 60vw; /* Optional: reduce height further on small screens */
+      height: 70vh; /* Optional: reduce height further on small screens */
     }
   
     .header-contents {

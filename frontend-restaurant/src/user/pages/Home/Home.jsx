@@ -2,7 +2,7 @@
 import React from "react";
 import "./Home.css";
 import Header from "../../components/Header/Header";
-import Header2 from "../../components/Header2/Header2";
+
 
 
 const Home = () => {
@@ -10,7 +10,6 @@ const Home = () => {
   return (
     <div className="home-header-wrapper">
       <Header />
-      <Header2 />
     </div>
   );
 };

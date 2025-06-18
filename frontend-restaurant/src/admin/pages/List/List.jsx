@@ -11,9 +11,6 @@ const List = () => {
 
   const fetchList = async () => {
     const response = await axios.get(`${url}/api/food/list`);
-    console.log('====================================');
-    console.log(response.data);
-    console.log('====================================');
     if (response.data.success) {
       setList(response.data.data);
     }
@@ -33,6 +30,25 @@ const List = () => {
     }
   }
 
+  const toggleSoldOut = async (foodId, currentStatus) => {
+    try {
+      const response = await axios.post(`${url}/api/food/update-soldout`, {
+        foodId,
+        isSoldOut: !currentStatus
+      });
+  
+      if (response.data.success) {
+        toast.success("Sold out status updated");
+        fetchList(); // Refresh list
+      } else {
+        toast.error("Failed to update status");
+      }
+    } catch (error) {
+      toast.error("Error updating sold out status");
+    }
+  };
+  
+
   useEffect(() => {
     fetchList();
   }, [])
@@ -46,6 +62,7 @@ const List = () => {
           <b>Name</b>
           <b>Category</b>
           <b>Price</b>
+          <b>Sold Out</b>
           <b>Action</b>
         </div>
         {list.map((item,index)=>{
@@ -55,6 +72,17 @@ const List = () => {
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>{item.price}</p>
+              <p>
+                <button
+                  className={`li-button`}
+                  style={{
+                    background: item.isSoldOut ? "#ffc107" : "#198754"
+                  }}
+                  onClick={() => toggleSoldOut(item._id, item.isSoldOut)}
+                >
+                  {item.isSoldOut ? "Mark In" : "Sold Out"}
+                </button>
+              </p>
               <button onClick={()=>removeFood(item._id)} className='li-button'>Remove</button>
             </div>
           )

@@ -20,6 +20,12 @@ const Add = () => {
   const [categories, setCategories] = useState([]);
   const [extraIngredients, setExtraIngredients] = useState([]); // 🟢 Store all available extras
 
+  const [mandatoryOptions, setMandatoryOptions] = useState([]);
+  const [optionTitle, setOptionTitle] = useState("");
+  const [optionChoice, setOptionChoice] = useState({ label: "", additionalPrice: 0 });
+  const [optionChoices, setOptionChoices] = useState([]);
+
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -74,6 +80,8 @@ const Add = () => {
     formData.append("category", data.category);
     formData.append("image", image);
     formData.append("extras", JSON.stringify(data.extras)); // 🟢 Convert extras to JSON string
+    formData.append("mandatoryOptions", JSON.stringify(mandatoryOptions));
+
 
     try {
       const response = await axios.post(`${url()}/api/food/add`, formData);
@@ -146,7 +154,11 @@ const Add = () => {
               onChange={onChangeHandler}
               value={data.category}
               name="category"
+              required
             >
+              <option value="" disabled>
+                Select categor
+              </option>
               {categories.map((cat) => (
                 <option key={cat._id} value={cat.name}>
                   {cat.name}
@@ -162,7 +174,7 @@ const Add = () => {
               value={data.price}
               type="Number"
               name="price"
-              placeholder="$"
+              placeholder="Kr"
             />
           </div>
         </div>
@@ -179,11 +191,113 @@ const Add = () => {
                   onChange={onExtraChange}
                   checked={data.extras.includes(extra.name)}
                 />
-                {extra.name} - ${extra.price}
+                {extra.name} - Kr{extra.price}
               </label>
             ))}
           </div>
         </div>
+
+
+        {/* 🔵 Mandatory Options (with per-choice pricing) */}
+        <div className="add-mandatory-options flex-col">
+          <p>Mandatory Options (e.g., Burger Size, Spice Level)</p>
+
+          <div className="mandatory-form">
+            {/* Option Group Title (e.g., Burger Size) */}
+            <input
+              type="text"
+              placeholder="Option Title (e.g., Burger Size)"
+              value={optionTitle}
+              onChange={(e) => setOptionTitle(e.target.value)}
+            />
+
+            {/* Choice Input: Label and Price */}
+            <div className="choices-wrapper">
+              <input
+                type="text"
+                placeholder="Choice Label (e.g., 130g)"
+                value={optionChoice.label || ""}
+                onChange={(e) =>
+                  setOptionChoice((prev) => ({ ...prev, label: e.target.value }))
+                }
+              />
+              <input
+                type="number"
+                placeholder="Additional Price (e.g., 25)"
+                value={optionChoice.additionalPrice || ""}
+                onChange={(e) =>
+                  setOptionChoice((prev) => ({
+                    ...prev,
+                    additionalPrice: Number(e.target.value),
+                  }))
+                }
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  if (optionChoice.label) {
+                    setOptionChoices([...optionChoices, optionChoice]);
+                    setOptionChoice({});
+                  }
+                }}
+              >
+                Add Choice
+              </button>
+            </div>
+
+            {/* Show Added Choices for This Group */}
+            <div className="current-choices">
+              {optionChoices.map((choice, idx) => (
+                <span key={idx} className="choice-item">
+                  {choice.label} {choice.additionalPrice ? `( +${choice.additionalPrice}kr )` : ""}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOptionChoices(optionChoices.filter((_, i) => i !== idx))
+                    }
+                  >
+                    ❌
+                  </button>
+                </span>
+              ))}
+            </div>
+
+            {/* Save This Option Group */}
+            <button
+              type="button"
+              onClick={() => {
+                if (optionTitle && optionChoices.length) {
+                  setMandatoryOptions([
+                    ...mandatoryOptions,
+                    { title: optionTitle, choices: optionChoices },
+                  ]);
+                  setOptionTitle("");
+                  setOptionChoices([]);
+                }
+              }}
+            >
+              Save Option Group
+            </button>
+          </div>
+
+          {/* Display All Saved Option Groups */}
+          <div className="saved-options">
+            {mandatoryOptions.map((opt, idx) => (
+              <div key={idx} className="saved-option">
+                <strong>{opt.title}</strong>:
+                {opt.choices.map((c, i) => (
+                  <span key={i}>
+                    {" "}
+                    {c.label} {c.additionalPrice ? `( +${c.additionalPrice}kr )` : ""}
+                    {i !== opt.choices.length - 1 && ","}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+
 
         <button type="submit" className="add-button">
           ADD

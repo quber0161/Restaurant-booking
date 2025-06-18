@@ -14,6 +14,7 @@ import AboutUs from "./pages/AboutUs/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import GuestTrack from "./pages/GuestTrack/GuestTrack";
 import TableBooking from "./pages/TableBooking/TableBooking";
+import HomeLanding from "./pages/HomeLanding/HomeLanding";
 
 function UserApp() {
   const [showLogin, setShowLogin] = useState(false);
@@ -24,7 +25,7 @@ function UserApp() {
       <div className="app">
         <Navbar setShowLogin={setShowLogin} />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomeLanding />} />
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />

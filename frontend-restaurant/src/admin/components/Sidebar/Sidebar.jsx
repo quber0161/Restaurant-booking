@@ -32,6 +32,10 @@ const Sidebar = () => {
           <img src={assets.add_icon} alt="" />
           <p>Extra Ingredients</p>
         </NavLink>
+        <NavLink to="/admin/store-hours" className="sidebar-option">
+          <img src={assets.add_icon} alt="" />
+          <p>Store Hours</p>
+        </NavLink>
       </div>
     </div>
   );
