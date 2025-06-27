@@ -14,7 +14,7 @@ const daysOfWeek = [
 ];
 
 export default function StoreHour() {
-    const url = "http://localhost:4000";
+    const url = "https://restaurant-booking-35qh.onrender.com";
 
   const [hours, setHours] = useState([]);
   const [overrides, setOverrides] = useState([]);
