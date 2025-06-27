@@ -14,6 +14,7 @@ import bookingRouter from "./routes/bookingRoute.js"
 // ✅ NEW: Socket.io Setup
 import { Server } from "socket.io"
 import http from "http"
+import storeHourRouter from "./routes/storeHourRoute.js"
 
 
 // app config
@@ -57,6 +58,7 @@ app.use("/api/category", categoryRouter)
 app.use("/categoryimages", express.static('uploads/categories'))
 app.use("/api/extras", extraRouter); // 🟢 Register Extra Ingredients API
 app.use('/api/bookings', bookingRouter);
+app.use("/api/store-hours", storeHourRouter)
 
 app.get("/", (req, res) => {
     res.send("API Working")

@@ -27,11 +27,14 @@ const MenuPage = () => {
         <div className="store-closed-banner">
           {isPreOrderTime
             ? "The store is currently closed, but you can place a pre-order now."
-            : "TThe Restaurant is currently closed. You can browse the menu but ordering is disabled."}
+            : "Sorry, We are currently closed. You can browse the menu but ordering is disabled."}
         </div>
       )}
       <Menu category={category} setCategory={setCategory} />
-      <FoodDisplay category={category} isOrderAllowed={isOrderAllowed || isPreOrderTime} />
+      <FoodDisplay
+        category={category}
+        isOrderAllowed={isOrderAllowed || isPreOrderTime}
+      />
     </div>
   );
 };
