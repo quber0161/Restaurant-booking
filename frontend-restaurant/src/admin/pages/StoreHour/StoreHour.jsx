@@ -54,7 +54,7 @@ export default function StoreHour() {
     await axios.post(`${url}/api/store-hours`, {
       date: overrideDate,
       day: dayName,
-      openTime: "00:00",
+      openTime: "01:00",
       closeTime: "23:00",
       isClosed: false,
       isOverride: true,
@@ -79,7 +79,7 @@ export default function StoreHour() {
             <input
               type="time"
               className="time-input"
-              value={h.openTime || "13:00"}
+              value={h.openTime || "01:00"}
               disabled={h.isClosed}
               onChange={(e) => updateHour(day, "openTime", e.target.value)}
             />
