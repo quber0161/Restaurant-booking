@@ -14,9 +14,9 @@ const MenuPage = () => {
 
   useEffect(() => {
     fetch("http://localhost:4000/api/store-hours/store-status")
-      .then(res => res.json())
-      .then(data => setStoreStatus(data))
-      .catch(err => console.error("Failed to fetch store status", err));
+      .then((res) => res.json())
+      .then((data) => setStoreStatus(data))
+      .catch((err) => console.error("Failed to fetch store status", err));
   }, []);
 
   const { isOpen, isOrderAllowed, isPreOrderTime } = storeStatus;
@@ -27,11 +27,14 @@ const MenuPage = () => {
         <div className="store-closed-banner">
           {isPreOrderTime
             ? "The store is currently closed, but you can place a pre-order now."
-            : "TThe Restaurant is currently closed. You can browse the menu but ordering is disabled."}
+            : "Sorry, We are currently closed. You can browse the menu but ordering is disabled."}
         </div>
       )}
       <Menu category={category} setCategory={setCategory} />
-      <FoodDisplay category={category} isOrderAllowed={isOrderAllowed || isPreOrderTime} />
+      <FoodDisplay
+        category={category}
+        isOrderAllowed={isOrderAllowed || isPreOrderTime}
+      />
     </div>
   );
 };
