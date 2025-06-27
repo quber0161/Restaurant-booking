@@ -25,9 +25,17 @@ const StoreContextProvider = (props) => {
   const [category_list, setCategoryList] = useState([]);
 
   // Updated addToCart to store items as objects with quantity, extras, and comment
-  const addToCart = async (itemId, extras = [], comment = "") => {
-    const cartKey = `${itemId}_${btoa(JSON.stringify(extras))}_${btoa(comment)}`;
-  
+  const addToCart = async (
+    itemId,
+    extras = [],
+    comment = "",
+    quantity = 1,
+    mandatoryOptions = [] // 👈 New
+  ) => {
+    // Include mandatoryOptions in the key for uniqueness
+    const cartKey = `${itemId}_${btoa(JSON.stringify(mandatoryOptions))}_${btoa(JSON.stringify(extras))}_${btoa(comment)}`;
+
+
     // 🟢 Enrich extras with name and price
     const enrichedExtras = extras.map(extra => {
       if (extra.price && extra.name) return extra;
@@ -41,10 +49,19 @@ const StoreContextProvider = (props) => {
       };
     });
   
-    // 🧠 Construct the new cart state
+    const currentQuantity = cartItems[cartKey]?.quantity || 0;
+  
+    const updatedCartItem = {
+      itemId,
+      extras: enrichedExtras,
+      comment,
+      quantity: currentQuantity + quantity,
+      mandatoryOptions, // 🆕 Add this to cart item structure
+    };
+  
     const updatedCart = {
       ...cartItems,
-      [cartKey]: { itemId, quantity: 1, extras: enrichedExtras, comment }
+      [cartKey]: updatedCartItem
     };
   
     setCartItems(updatedCart);
@@ -54,26 +71,43 @@ const StoreContextProvider = (props) => {
       try {
         await axios.post(
           url + "/api/cart/add",
-          { cartKey, itemId, extras: enrichedExtras, comment },
+          {
+            cartKey,
+            itemId,
+            extras: enrichedExtras,
+            comment,
+            quantity: updatedCartItem.quantity,
+            mandatoryOptions
+          },
           { headers: { token } }
         );
       } catch (error) {
         console.error("Error adding to cart:", error);
       }
-    } 
-    
-    if (!token) {
+    } else {
+      // 🧠 For guests: update localStorage
       setCartItems(prev => {
-        const updatedCart = {
-          ...prev,
-          [cartKey]: { itemId, quantity: 1, extras: enrichedExtras, comment }
+        const currentQty = prev[cartKey]?.quantity || 0;
+        const updatedCartItem = {
+          itemId,
+          extras: enrichedExtras,
+          comment,
+          quantity: currentQty + quantity,
+          mandatoryOptions
         };
-        localStorage.setItem("guestCart", JSON.stringify(updatedCart));
-        return updatedCart;
+  
+        const newCart = {
+          ...prev,
+          [cartKey]: updatedCartItem
+        };
+  
+        localStorage.setItem("guestCart", JSON.stringify(newCart));
+        return newCart;
       });
     }
-    
   };
+  
+  
   
   
 
@@ -111,31 +145,34 @@ const StoreContextProvider = (props) => {
   const [totalCartAmount, setTotalCartAmount] = useState(0);
 
   const calculateTotalAmount = () => {
-    // if (food_list.length === 0) {
-    //   console.warn("⚠️ Food list is empty, skipping total calculation");
-    //   return;
-    // }
-  
     let total = 0;
   
     Object.values(cartItems).forEach((cartItem) => {
       const foodItem = food_list.find((product) => product._id === cartItem.itemId);
   
       if (foodItem) {
-        // 🟢 Ensure extras have valid price and quantity
+        // Extras cost
         const extrasCost = (cartItem.extras || []).reduce((sum, extra) => {
-          const extraDetails = food_list.flatMap(f => f.extras || []).find(e => e._id === extra._id);
+          const extraDetails = foodItem.extras?.find(e => e._id === extra._id);
           const extraPrice = extraDetails ? extraDetails.price : 0;
           return sum + (extraPrice * (extra.quantity || 1));
         }, 0);
   
-        const itemTotal = (foodItem.price + extrasCost) * (cartItem.quantity || 1);
+        // Mandatory options cost
+        const mandatoryOptionCost = Object.values(cartItem.mandatoryOptions || {}).reduce(
+          (sum, option) => sum + (option?.additionalPrice || 0),
+          0
+        );
+  
+        const itemTotal = (foodItem.price + extrasCost + mandatoryOptionCost) * (cartItem.quantity || 1);
         total += itemTotal;
       }
     });
   
     setTotalCartAmount(total);
   };
+  
+  
   
   // 🔹 Ensure total is recalculated when cartItems *or* food_list are available
   useEffect(() => {
@@ -159,12 +196,10 @@ const StoreContextProvider = (props) => {
 
 
   const loadCartData = async (token) => {
-  
     try {
       const response = await axios.post(url + "/api/cart/get", {}, { headers: { token } });
   
       if (response.data.success && response.data.cartData) {
-  
         let transformedCart = {};
   
         // 🟢 Fetch extras list to get names & prices
@@ -185,6 +220,8 @@ const StoreContextProvider = (props) => {
               quantity: extra.quantity || 1,
             })),
             comment: item.comment || "",
+            // ✅ Include mandatory options!
+            mandatoryOptions: item.mandatoryOptions || {},
           };
         });
   

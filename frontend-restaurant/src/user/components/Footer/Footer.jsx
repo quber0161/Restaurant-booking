@@ -11,10 +11,10 @@ const Footer = () => {
         <div className="footer-content-left">
           <img src={assets.logo} alt="" />
           <p>
-            Vår flotte resturant ligger midt i hjerte av Sandvika, rett i nærhet
-            av Sandvika storsenter. Vi serverer deilig grillmat kun med ferske
-            rådvarer og topp kvalitet. Ta en tur innom oss for en hyggelig
-            matopplevelse og opplev delikatesser fra Persia.
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+            Tenetur fugiat, odio adipisci rerum dicta non ullam corporis, 
+            iure ea doloremque quisquam pariatur tempora facilis, 
+            assumenda dolorem voluptatum tempore deleniti quo!
           </p>{" "}
           <div className="footer-social-icons">
             {/* 🟢 Facebook Icon (Replace with your actual Facebook URL) */}
@@ -51,8 +51,8 @@ const Footer = () => {
         <div className="footer-content-right">
           <h2>GET IN TOUCH</h2>
           <ul>
-            <li><a href="tel:+4747364041">+47 473 64 041</a></li>
-            <li><a href="mailto:sandvika.kjottsenter@gmail.com">sandvika.kjottsenter@gmail.com</a></li>
+            <li><a href="tel:+4712345">+47 123 45 789</a></li>
+            <li><a href="mailto:resto@gmail.com">restauran@email.com</a></li>
           </ul>
         </div>
       </div>

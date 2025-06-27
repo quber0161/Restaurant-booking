@@ -130,6 +130,11 @@
     color: #c0392b;
 }
 
+.order-mandatory {
+    font-size: 14px;
+    color: #2980b9; /* Blue color for visibility */
+  }
+  
 
 
 @media (max-width:1000px) {

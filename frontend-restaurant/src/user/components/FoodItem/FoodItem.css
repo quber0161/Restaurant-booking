@@ -1,6 +1,9 @@
 .food-item {
     width: 100%;
-    margin: auto;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     border-radius: 15px;
     box-shadow: 0px 0px 10px rgba(78, 78, 78, 0.671);
     transition: 0.3s;
@@ -111,6 +114,7 @@
     flex-direction: column;
     gap: 10px;
     margin: 10px 0;
+    
 }
 
 .extra-item {
@@ -122,10 +126,24 @@
     border-radius: 6px;
 }
 
+.ex-p{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 12px 0;
+    margin-top: 20px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 700;
+    color: #222;
+}
+
 .extra-item p {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     margin: 0;
+    color: #333;
+    
 }
 
 /* Extra Ingredient Quantity Controls */
@@ -203,3 +221,115 @@ textarea {
 .popup-buttons button:last-child:hover {
     background: #e60000;
 }
+
+
+.food-item-image-container.sold-out {
+    position: relative;
+    filter: grayscale(100%) brightness(70%);
+    cursor: not-allowed;
+  }
+  
+  .sold-out-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px 15px 0 0;
+    pointer-events: none; /* So it doesn't block clicks */
+  }
+  
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .quantity-controls button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .quantity-controls span {
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+  }
+  
+
+/* 🔷 Mandatory Options */
+.mandatory-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 12px 0;
+    text-align: left;
+  }
+  
+  .mandatory-options p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #222;
+  }
+  
+  .mandatory-group {
+    background: #f9f9f9;
+    padding: 10px 12px;
+    border-radius: 6px;
+  }
+  
+  .mandatory-group > p {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #222;
+  }
+  
+  .mandatory-choices {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .mandatory-choices label {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .mandatory-choices input[type="radio"] {
+    accent-color: #ff4d4d;
+    cursor: pointer;
+  }
+  
+  .mandatory-choices label:hover {
+    background: #ffcfc4;
+    border-radius: 4px;
+  }
+  

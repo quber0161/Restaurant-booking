@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import { StoreContext } from "../user/context/StoreContext";
 import Extras from "./pages/Extras/Extras";
 import Bookings from "./pages/Bookings/Bookings";
+import StoreHour from "./pages/StoreHour/StoreHour";
 
 const AdminApp = () => {
   const url = "https://restaurant-booking-35qh.onrender.com";
@@ -37,6 +38,7 @@ const AdminApp = () => {
           <Route path="/categories" element={<Categories url={url} />} />
           <Route path="/extras" element={<Extras url={url} />}/>
           <Route path="/bookings" element={<Bookings url={url} />}/>
+          <Route path="/store-hours" element={<StoreHour url={url} />}/>
         </Routes>
       </div>
     </div>

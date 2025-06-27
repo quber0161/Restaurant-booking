@@ -5,7 +5,6 @@ import "./TableBooking.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 const TableBooking = () => {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState("");
@@ -21,8 +20,6 @@ const TableBooking = () => {
   const [availableGuests, setAvailableGuests] = useState(); // mocked availability
   const [slotAvailability, setSlotAvailability] = useState({});
 
-
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -30,8 +27,6 @@ const TableBooking = () => {
     phone: "",
     comment: "",
   });
-
-
 
   const handleNext = () => {
     if (step < 4) setStep(step + 1);
@@ -41,18 +36,16 @@ const TableBooking = () => {
     if (step > 1) setStep(step - 1);
   };
 
-
   const formatLocalDate = (dateObj) => {
     const year = dateObj.getFullYear();
-    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const day = String(dateObj.getDate()).padStart(2, '0');
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
   const handleSubmit = async () => {
     const { firstName, lastName, email, phone, comment } = formData;
-  
-  
+
     const bookingData = {
       firstName,
       lastName,
@@ -63,79 +56,89 @@ const TableBooking = () => {
       timeSlot: selectedTimeSlot,
       guestCount: selectedGuestCount,
     };
-  
+
     try {
       const response = await fetch('https://restaurant-booking-35qh.onrender.com/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingData),
       });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
 
-        setStep(5)
+      const data = await response.json();
+
+      if (response.ok) {
+        setStep(5);
       } else {
-        alert(data.error || 'Failed to submit booking.');
+        alert(data.error || "Failed to submit booking.");
       }
     } catch (error) {
-      console.error('Booking submission error:', error);
-      alert('Something went wrong. Please try again.');
+      console.error("Booking submission error:", error);
+      alert("Something went wrong. Please try again.");
     }
   };
-  
-  
+
+  const isPastTimeSlot = (slot) => {
+    if (!selectedDate) return false;
+
+    const today = new Date();
+    const selected = new Date(selectedDate);
+
+    // Check if the selected date is today
+    const isToday =
+      selected.getDate() === today.getDate() &&
+      selected.getMonth() === today.getMonth() &&
+      selected.getFullYear() === today.getFullYear();
+
+    if (!isToday) return false;
+
+    // Parse the hour from the slot (e.g., "18:00 - 19:00")
+    const slotHour = parseInt(slot.split(":")[0]);
+    return slotHour <= today.getHours();
+  };
 
   useEffect(() => {
     const fetchAvailability = async () => {
       if (!selectedDate || !selectedTimeSlot) return;
-  
+
       try {
-        const formattedDate = new Date(selectedDate).toISOString().split("T")[0];
+        const formattedDate = new Date(selectedDate)
+          .toISOString()
+          .split("T")[0];
         const response = await fetch(
           `https://restaurant-booking-35qh.onrender.com/api/bookings/availability?date=${formattedDate}&timeSlot=${selectedTimeSlot}`
         );
         const data = await response.json();
         setAvailableGuests(data.availableGuests);
-
-
       } catch (error) {
         console.error("Error fetching availability:", error);
       }
     };
-  
+
     fetchAvailability();
   }, [selectedDate, selectedTimeSlot]);
-  
-
-
 
   useEffect(() => {
     const fetchSlotAvailability = async () => {
-        if (!selectedDate) return;
+      if (!selectedDate) return;
 
         try {
         const formattedDate = new Date(selectedDate).toISOString().split("T")[0];
         const res = await fetch(`https://restaurant-booking-35qh.onrender.com/api/bookings/by-date/${formattedDate}`);
         const data = await res.json();
         if (data.success) {
-            setSlotAvailability(data.timeSlotGuestMap);
+          setSlotAvailability(data.timeSlotGuestMap);
         }
-        } catch (err) {
+      } catch (err) {
         console.error("Error fetching slot availability:", err);
-        }
+      }
     };
 
     fetchSlotAvailability();
-    }, [selectedDate]);
+  }, [selectedDate]);
 
-  
-  
-  useEffect(()=>{
+  useEffect(() => {
     window.scrollTo(0, 0);
-  },[])
-
+  }, []);
 
   return (
     <div className="booking-container">
@@ -144,7 +147,9 @@ const TableBooking = () => {
         <div className={`step ${step >= 1 ? "active" : ""}`}>Date</div>
         <div className={`step ${step >= 2 ? "active" : ""}`}>Time</div>
         <div className={`step ${step >= 3 ? "active" : ""}`}>Guests</div>
-        <div className={`step ${step === 4 || step=== 5 ? "active" : ""}`}>Confirm</div>
+        <div className={`step ${step === 4 || step === 5 ? "active" : ""}`}>
+          Confirm
+        </div>
       </div>
 
       {step === 1 && (
@@ -158,44 +163,47 @@ const TableBooking = () => {
             className="custom-datepicker"
             calendarClassName="custom-calendar"
             dateFormat="yyyy-MM-dd"
-            />
+          />
           <button onClick={handleNext} disabled={!selectedDate}>
             Next
           </button>
         </div>
       )}
 
-        {step === 2 && (
+      {step === 2 && (
         <div className="step-content">
-            <label>Select a Time Slot:</label>
-            <div className="timeslot-container">
+          <label>Select a Time Slot:</label>
+          <div className="timeslot-container">
             {timeSlots.map((slot, index) => {
-                const booked = slotAvailability[slot] || 0;
-                const isFull = booked >= 20;
+              const booked = slotAvailability[slot] || 0;
+              const isFull = booked >= 20;
+              const isPast = isPastTimeSlot(slot);
 
-                return (
+              return (
                 <button
-                    key={index}
-                    className={`timeslot-button ${selectedTimeSlot === slot ? "selected" : ""}`}
-                    onClick={() => !isFull && setSelectedTimeSlot(slot)}
-                    disabled={isFull}
+                  key={index}
+                  className={`timeslot-button ${
+                    selectedTimeSlot === slot ? "selected" : ""
+                  }`}
+                  onClick={() =>
+                    !isFull && !isPast && setSelectedTimeSlot(slot)
+                  }
+                  disabled={isFull || isPast}
                 >
-                    {slot}
-                    {isFull && " (Full)"}
+                  {slot}
+                  {(isFull && " (Full)") || (isPast && "")}
                 </button>
-                );
+              );
             })}
-            </div>
-            <div className="button-group">
+          </div>
+          <div className="button-group">
             <button onClick={handlePrev}>Back</button>
             <button onClick={handleNext} disabled={!selectedTimeSlot}>
-                Next
+              Next
             </button>
-            </div>
+          </div>
         </div>
-        )}
-
-
+      )}
 
       {step === 3 && (
         <div className="step-content">
@@ -305,27 +313,47 @@ const TableBooking = () => {
         </div>
       )}
 
-        {step === 5 && (
+      {step === 5 && (
         <div className="step-content confirmation-screen">
-            <h3>🎉 Booking Pending for Approval!</h3>
-            <p>Thank you, {formData.firstName}! We've received request.                
-                Your booking will be confrm through the email.
+          <h3>🎉 Booking Pending for Approval!</h3>
+          <p>
+            Thank you, {formData.firstName}! We've received request. Your
+            booking will be confrm through the email.
+          </p>
+          <div className="confirmation-details">
+            <p>
+              <strong>Date:</strong> {new Date(selectedDate).toDateString()}
             </p>
-            <div className="confirmation-details">
-            <p><strong>Date:</strong> {new Date(selectedDate).toDateString()}</p>
-            <p><strong>Time Slot:</strong> {selectedTimeSlot}</p>
-            <p><strong>Guests:</strong> {selectedGuestCount}</p>
-            <p><strong>Email:</strong> {formData.email}</p>
-            {formData.phone && <p><strong>Phone:</strong> {formData.phone}</p>}
-            {formData.comment && <p><strong>Comment:</strong> {formData.comment}</p>}
-            </div>
-            <div className="button-group">
-            <button onClick={() => window.location.reload()}>Make Another Booking</button>
-            <button onClick={() => window.location.href = "/"}>Go to Home</button>
-            </div>
+            <p>
+              <strong>Time Slot:</strong> {selectedTimeSlot}
+            </p>
+            <p>
+              <strong>Guests:</strong> {selectedGuestCount}
+            </p>
+            <p>
+              <strong>Email:</strong> {formData.email}
+            </p>
+            {formData.phone && (
+              <p>
+                <strong>Phone:</strong> {formData.phone}
+              </p>
+            )}
+            {formData.comment && (
+              <p>
+                <strong>Comment:</strong> {formData.comment}
+              </p>
+            )}
+          </div>
+          <div className="button-group">
+            <button onClick={() => window.location.reload()}>
+              Make Another Booking
+            </button>
+            <button onClick={() => (window.location.href = "/")}>
+              Go to Home
+            </button>
+          </div>
         </div>
-        )}
-
+      )}
     </div>
   );
 };
