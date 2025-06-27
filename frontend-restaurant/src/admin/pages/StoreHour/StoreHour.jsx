@@ -54,7 +54,7 @@ export default function StoreHour() {
     await axios.post(`${url}/api/store-hours`, {
       date: overrideDate,
       day: dayName,
-      openTime: "13:00",
+      openTime: "00:00",
       closeTime: "23:00",
       isClosed: false,
       isOverride: true,
